@@ -1,0 +1,19 @@
+cradle:
+  multi:
+    - path: ./Setup.hs
+      config:
+        cradle:
+          direct:
+            arguments:
+              - "-package Cabal"
+              - "-package base"
+    - path: ./
+      config:
+        cradle:
+          stack:
+            - path: "./src"
+              component: "app-bridge-back:lib"
+            - path: "./app/Main.hs"
+              component: "app-bridge-back:exe:app-bridge-back-exe"
+            - path: "./test"
+              component: "app-bridge-back:test:app-bridge-back-test"
