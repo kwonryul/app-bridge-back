@@ -27,9 +27,9 @@ library
   exposed-modules:
       Lib
   other-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   autogen-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -44,9 +44,9 @@ library
 executable app-bridge-back-exe
   main-is: Main.hs
   other-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   autogen-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   hs-source-dirs:
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -63,9 +63,9 @@ test-suite app-bridge-back-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   autogen-modules:
-      Paths_app_bridge_back
+Paths_app_bridge_back
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N

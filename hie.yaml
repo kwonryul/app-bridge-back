@@ -10,7 +10,7 @@ cradle:
     - path: ./
       config:
         cradle:
-          stack:
+          cabal:
             - path: "./src"
               component: "app-bridge-back:lib"
             - path: "./app/Main.hs"
