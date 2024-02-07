@@ -6,6 +6,7 @@ module Lib
     , app
     ) where
 
+import qualified Product.Controller.Interface as ProductController
 import Data.Aeson
 import Data.Aeson.TH
 import Network.Wai
@@ -20,7 +21,7 @@ data User = User
 
 $(deriveJSON defaultOptions ''User)
 
-type API = "users" :> Get '[JSON] [User]
+type API = "users" :> Get '[JSON] [User] :<|> ProductController.API
 
 startApp :: IO ()
 startApp = run 8080 app
@@ -33,6 +34,7 @@ api = Proxy
 
 server :: Server API
 server = return users
+  :<|> ProductController.server
 
 users :: [User]
 users = [ User 1 "Isaac" "Newton"
