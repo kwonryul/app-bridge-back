@@ -27,13 +27,18 @@ library
   exposed-modules:
       Lib
   other-modules:
-      Common.Aop.Log
-      Product.Controller.Interface
-      Product.Controller.Impl
-      Product.Dto.Response
-      Product.Service.Interface
-      Product.Service.Impl
+      Paths_app_bridge_back
+    , Context
+    , DB
+    , Header
+    , User.Model
+    , Product.Model
+    , Product.Dto
+    , Product.Controller
+    , Product.Service
+    , Product.Repository
   autogen-modules:
+      Paths_app_bridge_back
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -43,13 +48,28 @@ library
     , servant-server
     , wai
     , warp
+    , template-haskell
+    , raw-strings-qq
     , transformers
+    , monad-logger
+    , resourcet
+    , resource-pool
+    , bytestring
+    , text
+    , configurator
+    , persistent
+    , persistent-template
+    , persistent-postgresql
+    , postgresql-simple
+    --, persistent-mysql
   default-language: Haskell2010
 
 executable app-bridge-back-exe
   main-is: Main.hs
   other-modules:
+      Paths_app_bridge_back
   autogen-modules:
+      Paths_app_bridge_back
   hs-source-dirs:
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -66,6 +86,7 @@ test-suite app-bridge-back-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+    Paths_app_bridge_back
   autogen-modules:
   hs-source-dirs:
       test

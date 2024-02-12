@@ -1,16 +1,16 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Product.Dto.Response(
-    GetProduct(GetProduct, id, name, price)
+module Product.Dto(
+    ResGetProduct(ResGetProduct, id, name, price)
 ) where
 
 import Data.Aeson
 import Data.Aeson.TH
 
-data GetProduct = GetProduct {
+data ResGetProduct = ResGetProduct {
     id :: Int,
     name :: String,
     price :: Int
 } deriving (Eq, Show)
 
-$(deriveJSON defaultOptions ''GetProduct)
+$(deriveJSON defaultOptions ''ResGetProduct)
