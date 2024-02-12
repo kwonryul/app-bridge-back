@@ -7,15 +7,12 @@ import Product.Dto
 import qualified Product.Repository as ProductRepository
 
 import DB
-
 import Database.Persist
-
-import Data.Pool
-import Database.Persist.Postgresql
+import Database.Persist.Typed
 import Control.Monad.Trans.Reader
 import Control.Monad.Trans.Resource
 
-getProduct' :: (MonadUnliftIO m) => SqlBackend -> SqlBackend -> Int ->  m (Maybe ResGetProduct)
+getProduct' :: (MonadUnliftIO m) => PfdyConn -> AppBridgeConn -> Int ->  m (Maybe ResGetProduct)
 getProduct' conn conn' x = do
     productEntityWithUser' <- ProductRepository.getProduct conn conn' x
     case productEntityWithUser' of
@@ -26,12 +23,10 @@ getProduct' conn conn' x = do
                 _ -> return Nothing
         Nothing -> return Nothing
 
-getProduct :: (MonadUnliftIO m) => Pool SqlBackend -> Pool SqlBackend -> Int -> Int -> m (Maybe ResGetProduct)
+getProduct :: (MonadUnliftIO m) => PfdyPool -> AppBridgePool -> Int -> Int -> m (Maybe ResGetProduct)
 getProduct pfdyDbPool appBridgeDbPool x y = do
-    runSqlPool (ReaderT (\conn ->
-        runSqlPool (ReaderT (\conn' -> do
-            runReaderT (setSchema "sh") conn
-            runReaderT (setSchema "kwonryul") conn'
+    runSqlPoolFor (ReaderT (\conn ->
+        runSqlPoolFor (ReaderT (\conn' -> do
             getProduct' conn conn' (x + y)
         )) appBridgeDbPool
      )) pfdyDbPool

@@ -5,16 +5,18 @@ module Product.Repository(
 import Product.Model
 import User.Model
 
+import DB
+import Database.Persist.Typed
 import Control.Monad.Trans.Resource
 import Database.Persist
-import Database.Persist.Postgresql
+import Database.Persist.Sql
 import Control.Monad.Trans.Reader
 import Control.Monad.IO.Class
 
-getProduct :: (MonadUnliftIO m) => SqlBackend -> SqlBackend -> Int -> m (Maybe (Entity Product, Maybe User))
+getProduct :: (MonadUnliftIO m) => PfdyConn -> AppBridgeConn -> Int -> m (Maybe (Entity Product, Maybe User))
 getProduct conn conn' x = do
-    runReaderT (runMigration migrateUser) conn
-    runReaderT (runMigration migrateProduct) conn'
+    runReaderT (runMigration migrateUser) (generalizeSqlBackend conn)
+    runReaderT (runMigration migrateProduct) (generalizeSqlBackend conn')
     productEntityList <- runReaderT (selectList [ProductPrice ==. x] []) conn'
     let productEntity' = case productEntityList of
                         (e : []) -> 

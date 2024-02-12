@@ -16,12 +16,14 @@
 
 module Product.Model where
 
+import DB
 import User.Model
 
-import Database.Persist.Postgresql
+import Database.Persist.Sql
 import Database.Persist.TH
+import Database.Persist.Typed
 
-share [mkPersist sqlSettings, mkMigrate "migrateProduct"] [persistLowerCase|
+share [mkPersist (mkSqlSettingsFor ''AppBridgeDb), mkMigrate "migrateProduct"] [persistLowerCase|
 Product
     name String
     price Int

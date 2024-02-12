@@ -6,8 +6,6 @@ module Context(
 ) where
 
 import DB
-import Database.Persist.Postgresql
-import Data.Pool
 import Data.Configurator
 import Data.Configurator.Types
 import Control.Concurrent
@@ -18,8 +16,8 @@ import Control.Monad.Trans.Resource
 
 data Context = Context {
     getConfig :: Config
-  , getPfdyDbPool :: Pool SqlBackend
-  , getAppBridgeDbPool :: Pool SqlBackend
+  , getPfdyDbPool :: PfdyPool
+  , getAppBridgeDbPool :: AppBridgePool
   }
 
 getContext :: (MonadUnliftIO m, MonadLoggerIO m) => m Context
@@ -29,12 +27,12 @@ getContext = do
     pfdyDbPool <- getPfdyDbPool' config
     return $ Context {
         getConfig = config
-      , getPfdyDbPool = appBridgeDbPool
-      , getAppBridgeDbPool = pfdyDbPool
+      , getPfdyDbPool = pfdyDbPool
+      , getAppBridgeDbPool = appBridgeDbPool
     }
 
 
 getConfig' :: IO (Config, ThreadId)
 getConfig' = liftIO $ do
-    filePath <- getDataFileName "src/resources/application.cfg"
+    filePath <- getDataFileName "resources/application.cfg"
     autoReload autoConfig [Required filePath]

@@ -16,10 +16,12 @@
 
 module User.Model where
 
-import Database.Persist.Postgresql
+import DB
+import Database.Persist.Sql
 import Database.Persist.TH
+import Database.Persist.Typed
 
-share [mkPersist sqlSettings, mkMigrate "migrateUser"] [persistLowerCase|
+share [mkPersist (mkSqlSettingsFor ''PfdyDb), mkMigrate "migrateUser"] [persistLowerCase|
 User
     name String
     age Int

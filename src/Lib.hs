@@ -8,41 +8,41 @@ module Lib
 
 import Context as C
 import qualified Product.Controller as ProductController
-import Data.Aeson
-import Data.Aeson.TH
+import Paths_app_bridge_back
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
+import Servant.Static.TH.Internal.Mime
 import Control.Monad.Logger
 import Control.Monad.IO.Class
+import Data.ByteString as BS
+import System.IO
 
-data User = User
-  { userId        :: Int
-  , userFirstName :: String
-  , userLastName  :: String
-  } deriving (Eq, Show)
-
-$(deriveJSON defaultOptions ''User)
-
-type API = "users" :> Get '[JSON] [User]
-  :<|> ProductController.API
+type API = "favicon.ico" :> Get '[ICO] ByteString
+  :<|> "product" :> ProductController.API
+  :<|> "static" :> Raw
 
 startApp :: IO ()
 startApp = runStderrLoggingT $ do
   context <- getContext
-  liftIO $ run 8080 (app context)
+  filePath <- liftIO $ getDataFileName "resources/static"
+  liftIO $ run 8080 (app context filePath)
 
-app :: C.Context -> Application
-app context = serve api (server context)
+app :: C.Context -> FilePath -> Application
+app context filePath = serve api (server context filePath)
 
 api :: Proxy API
 api = Proxy
 
-server :: C.Context -> Server API
-server context = return users
+server :: C.Context -> FilePath -> Server API
+server context filePath = faviconServer
   :<|> ProductController.server context
+  :<|> serveDirectoryWebApp filePath
 
-users :: [User]
-users = [ User 1 "Isaac" "Newton"
-        , User 2 "Albert" "Einstein"
-        ]
+faviconServer :: Handler ByteString
+faviconServer = liftIO $ do
+    filePath <- getDataFileName "resources/images/favicon.ico"
+    handle <- openFile filePath ReadMode
+    contents <- BS.hGetContents handle
+    hClose handle
+    return contents
