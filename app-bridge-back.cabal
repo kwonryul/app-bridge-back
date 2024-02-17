@@ -52,6 +52,7 @@ library
     , servant-server
     , servant-static-th
     , wai
+    , wai-cors
     , warp
     , template-haskell
     , raw-strings-qq
@@ -61,6 +62,7 @@ library
     , resource-pool
     , bytestring
     , text
+    , http-types
     , configurator
     , persistent
     , persistent-template

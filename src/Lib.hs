@@ -8,6 +8,7 @@ module Lib
 
 import Context as C
 import qualified Product.Controller as ProductController
+import Middleware
 import Paths_app_bridge_back
 import Network.Wai
 import Network.Wai.Handler.Warp
@@ -29,7 +30,7 @@ startApp = runStderrLoggingT $ do
   liftIO $ run 8080 (app context filePath)
 
 app :: C.Context -> FilePath -> Application
-app context filePath = serve api (server context filePath)
+app context filePath = corsMiddleware $ serve api (server context filePath)
 
 api :: Proxy API
 api = Proxy
