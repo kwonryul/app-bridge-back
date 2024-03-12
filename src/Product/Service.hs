@@ -11,9 +11,11 @@ import Database.Persist
 import Database.Persist.Typed
 import Control.Monad.Trans.Reader
 import Control.Monad.Trans.Resource
+import Control.Monad.IO.Class
 
 getProduct' :: (MonadUnliftIO m) => PfdyConn -> AppBridgeConn -> Int ->  m (Maybe ResGetProduct)
 getProduct' conn conn' x = do
+    liftIO $ print "hi"
     productEntityWithUser' <- ProductRepository.getProduct conn conn' x
     case productEntityWithUser' of
         Just (Entity productId produkt, _) -> do

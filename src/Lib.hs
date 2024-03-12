@@ -27,7 +27,7 @@ startApp :: IO ()
 startApp = runStderrLoggingT $ do
   context <- getContext
   filePath <- liftIO $ getDataFileName "resources/static"
-  liftIO $ run 8080 (app context filePath)
+  liftIO $ run 8083 (app context filePath)
 
 app :: C.Context -> FilePath -> Application
 app context filePath = corsMiddleware $ serve api (server context filePath)
